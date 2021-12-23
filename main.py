@@ -7,8 +7,8 @@ SessionLogin = CRUD.SessionLogin()
 
 while(1):
     print("PROGRAM INPUT USER")
-    print("Login admin dulu bro")
     if not(SessionLogin.getStatusLogin()):
+        print("Login admin dulu bro")
         userAdmin = input("Username: ")
         passAdmin = input("Password: ")
         resultLogin = CRUD.SessionLogging(usernameIn=userAdmin, passwordIn=passAdmin)
@@ -36,11 +36,20 @@ while(1):
         else:
             print("Maaf User tidak ditemukan")
     elif (myinput == 3):
-        print("Not Implemented")
+        userIn = input("Akun yang akan dihapus?: ")
+        userObj = CRUD.cariUser(userIn)
+        if (userObj):
+            if(True if input(f"Yakin hapus akun {userObj.username} (y/n)?: ")=="y" else False):
+                CRUD.deleteUser(userObj.username)
+            else:
+                print("Hapus data dibatalkan")
+        else:
+            print("Akun tidak ditemukan")
     elif (myinput == 4):
         print("Not Implemented")
     elif(myinput == 5):
         exit(0)
+    print("\n")
 
 
 

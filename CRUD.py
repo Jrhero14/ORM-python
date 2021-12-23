@@ -35,11 +35,12 @@ def getInfoUser():
     else:
         print("Maaf Password Salah")
 
-def deleteUser():
+def deleteUser(username):
     Session = SessionLocal()
-    getObj = Session.query(user).filter(user.username == "Udin").first()
-    Session.delete(getObj)
+    userObj = Session.query(user).filter(user.username == username).first()
+    Session.delete(userObj)
     Session.commit()
+    print("Hapus Data Complete")
 
 class SessionLogin():
     def __init__(self):
