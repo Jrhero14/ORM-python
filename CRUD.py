@@ -14,18 +14,20 @@ def tambahUser(username: str, password: str, age: int, email: str):
     session.add(newUser)
     session.commit()
     print("Sukses commit data ke database")
+    SessionLocal.close_all()
 
 def cariUser(username: Optional[str] = None):
     Session = SessionLocal()
     users = Session.query(user).filter(user.username == username).first()
+    SessionLocal.close_all()
     return users
 
-def getInfoUser():
+def getInfoUser(username: str):
     Session = SessionLocal()
     passIn = input("Masukan Password Akun: ")
     hashResult = hashed(some=passIn)
     userObj = Session.query(user).filter(user.hashed_password == hashResult).first()
-    if (userObj):
+    if (userObj and userObj.username == username):
         infoUser = f'''
             Nama: {userObj.username}
             Umur: {userObj.age}
@@ -34,6 +36,7 @@ def getInfoUser():
         print(infoUser)
     else:
         print("Maaf Password Salah")
+    SessionLocal.close_all()
 
 def deleteUser(username):
     Session = SessionLocal()
@@ -41,6 +44,7 @@ def deleteUser(username):
     Session.delete(userObj)
     Session.commit()
     print("Hapus Data Complete")
+    SessionLocal.close_all()
 
 class SessionLogin():
     def __init__(self):
@@ -71,7 +75,18 @@ def SessionLogging(usernameIn: str, passwordIn: str):
             print("Username atau password salah")
             exit()
         print("Anda berhasil login sebagai ADMIN")
+        SessionLocal.close_all()
         return getUser
     else:
         print("Username atau password salah")
         exit()
+
+def EditData(usernameIn: str, emailIn: str, umurIn:int, data):
+    Session = SessionLocal()
+    getObj = Session.query(user).filter(user.username == data.username).first()
+    getObj.username = usernameIn
+    getObj.email = emailIn
+    getObj.age = umurIn
+    Session.commit()
+    Session.refresh(getObj)
+    SessionLocal.close_all()

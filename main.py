@@ -20,6 +20,7 @@ while(1):
           "5. Exit\n"
           f"STATUS lOGIN [{SessionLogin.getUser()}]")
     myinput = int(input("Pilih menu:"))
+
     if (myinput == 1):
         usernameIn = input("Masukan username: ")
         umurIn = int(input("Umur: "))
@@ -29,12 +30,14 @@ while(1):
         while (passwordIn != reIn):
             reIn = input("Password tidak sama, ulangi: ")
         CRUD.tambahUser(username=usernameIn, password=passwordIn, age=umurIn, email=emailIn)
+
     elif (myinput == 2):
         usernameIn = input("Username: ")
         if (CRUD.cariUser(username=usernameIn)):
-            CRUD.getInfoUser()
+            CRUD.getInfoUser(username=usernameIn)
         else:
             print("Maaf User tidak ditemukan")
+
     elif (myinput == 3):
         userIn = input("Akun yang akan dihapus?: ")
         userObj = CRUD.cariUser(userIn)
@@ -45,10 +48,21 @@ while(1):
                 print("Hapus data dibatalkan")
         else:
             print("Akun tidak ditemukan")
+
     elif (myinput == 4):
-        print("Not Implemented")
+        userEdit = input("User yang akan didedit: ")
+        getObj = CRUD.cariUser(username=userEdit)
+        if (getObj):
+            print(f"User yang diedit adalah [{getObj.username}]")
+            usernameEdit = input("Username Baru: ")
+            emailEdit = input("Email Baru: ")
+            umur = int(input("Umur baru: "))
+            CRUD.EditData(usernameIn=usernameEdit, emailIn=emailEdit, umurIn=umur, data=getObj)
+            print("Edit data berhasil")
+
     elif(myinput == 5):
         exit(0)
+
     print("\n")
 
 
